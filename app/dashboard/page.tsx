@@ -82,7 +82,7 @@ const savedDesigns = [
   {
     id: "4",
     name: "Kitchen Renovation",
-    image: "https://images.unsplash.com/photo-1556911220-bda9f7f7597e?q=80&w=1968&auto=format&fit=crop",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-UsDM0xDupK3FRQi4Weh7ZmfPETS3tm.png",
     icon: Coffee,
     lastEdited: "1 week ago",
     favorite: false,
