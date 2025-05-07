@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Check, Eye, EyeOff, Home, Sofa } from "lucide-react"
+import { ArrowRight, Check, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -134,10 +134,15 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-center items-center w-full p-12">
           <div className="mb-8 flex items-center">
             <div className="relative h-16 w-16 mr-4">
-              <Sofa className="h-12 w-12 text-rich-walnut absolute top-1 left-1" />
-              <Home className="h-16 w-16 text-warm-chestnut/70" />
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ETMOTI3uXXH5Jz8ComMVrmsyOoy2tI.png"
+                alt="RoomCrafter Logo"
+                width={64}
+                height={64}
+                className="object-contain"
+              />
             </div>
-            <h1 className="text-4xl font-bold text-rich-walnut">RoomCrafter</h1>
+            <h1 className="text-4xl font-bold text-[#5d4037]">RoomCrafter</h1>
           </div>
 
           <div className="text-center mb-12">
@@ -186,10 +191,15 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <div className="mb-8 flex items-center justify-center md:hidden">
             <div className="relative h-12 w-12 mr-3">
-              <Sofa className="h-9 w-9 text-rich-walnut absolute top-1 left-1" />
-              <Home className="h-12 w-12 text-warm-chestnut/70" />
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ETMOTI3uXXH5Jz8ComMVrmsyOoy2tI.png"
+                alt="RoomCrafter Logo"
+                width={48}
+                height={48}
+                className="object-contain"
+              />
             </div>
-            <h1 className="text-3xl font-bold text-rich-walnut">RoomCrafter</h1>
+            <h1 className="text-3xl font-bold text-[#5d4037]">RoomCrafter</h1>
           </div>
 
           <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
