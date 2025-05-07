@@ -53,12 +53,12 @@ import { DecorativeBackground } from "@/components/decorative-background"
 import Image from "next/image"
 import { CartIcon } from "@/components/cart-icon"
 
-// Mock data for saved designs with images instead of color themes
+// Mock data for saved designs with contextually appropriate images
 const savedDesigns = [
   {
     id: "1",
     name: "Modern Living Room",
-    image: "/public/design-previews/modern-living-room.jpg",
+    image: "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=1973&auto=format&fit=crop",
     icon: Home,
     lastEdited: "2 hours ago",
     favorite: true,
@@ -66,7 +66,7 @@ const savedDesigns = [
   {
     id: "2",
     name: "Minimalist Bedroom",
-    image: "/public/design-previews/minimalist-bedroom.jpg",
+    image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=1780&auto=format&fit=crop",
     icon: Bed,
     lastEdited: "Yesterday",
     favorite: false,
@@ -74,7 +74,7 @@ const savedDesigns = [
   {
     id: "3",
     name: "Cozy Office Space",
-    image: "/public/design-previews/cozy-office.jpg",
+    image: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=1740&auto=format&fit=crop",
     icon: BookOpen,
     lastEdited: "3 days ago",
     favorite: true,
@@ -82,7 +82,7 @@ const savedDesigns = [
   {
     id: "4",
     name: "Kitchen Renovation",
-    image: "/public/design-previews/kitchen-renovation.jpg",
+    image: "https://images.unsplash.com/photo-1556911220-bda9f7f7597e?q=80&w=1968&auto=format&fit=crop",
     icon: Coffee,
     lastEdited: "1 week ago",
     favorite: false,
@@ -90,7 +90,7 @@ const savedDesigns = [
   {
     id: "5",
     name: "Bathroom Design",
-    image: "/public/design-previews/bathroom-design.jpg",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1770&auto=format&fit=crop",
     icon: Bath,
     lastEdited: "2 weeks ago",
     favorite: false,
@@ -98,40 +98,40 @@ const savedDesigns = [
   {
     id: "6",
     name: "Guest Room Layout",
-    image: "/public/design-previews/guest-room.jpg",
+    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1771&auto=format&fit=crop",
     icon: Armchair,
     lastEdited: "1 month ago",
     favorite: true,
   },
 ]
 
-// Mock data for templates with images instead of color themes
+// Mock data for templates with contextually appropriate images
 const templates = [
   {
     id: "t1",
     name: "Modern Studio Apartment",
-    image: "/public/template-previews/modern-studio.jpg",
+    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1770&auto=format&fit=crop",
     icon: Home,
     category: "Apartment",
   },
   {
     id: "t2",
     name: "Open Concept Living",
-    image: "/public/template-previews/open-concept.jpg",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1770&auto=format&fit=crop",
     icon: Sofa,
     category: "Living Room",
   },
   {
     id: "t3",
     name: "Master Bedroom Suite",
-    image: "/public/template-previews/master-bedroom.jpg",
+    image: "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?q=80&w=1771&auto=format&fit=crop",
     icon: Bed,
     category: "Bedroom",
   },
   {
     id: "t4",
     name: "Home Office Setup",
-    image: "/public/template-previews/home-office.jpg",
+    image: "https://images.unsplash.com/photo-1593476550610-87baa860004a?q=80&w=1776&auto=format&fit=crop",
     icon: BookOpen,
     category: "Office",
   },
@@ -167,9 +167,15 @@ export default function DashboardPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [designToDelete, setDesignToDelete] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [imageError, setImageError] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
-    setIsLoaded(true)
+    // Set a small timeout to ensure DOM is fully ready
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const filteredDesigns = designs.filter((design) => design.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -207,6 +213,20 @@ export default function DashboardPage() {
 
   const handleUseTemplate = (templateId: string) => {
     router.push(`/new-design?template=${templateId}`)
+  }
+
+  const handleImageError = (id: string) => {
+    setImageError((prev) => ({ ...prev, [id]: true }))
+  }
+
+  // Fallback image if the main image fails to load
+  const getFallbackImage = (type: string) => {
+    if (type.includes("Living")) return "/placeholder.svg?height=300&width=400"
+    if (type.includes("Bedroom")) return "/placeholder.svg?height=300&width=400"
+    if (type.includes("Office")) return "/placeholder.svg?height=300&width=400"
+    if (type.includes("Kitchen")) return "/placeholder.svg?height=300&width=400"
+    if (type.includes("Bathroom")) return "/placeholder.svg?height=300&width=400"
+    return "/placeholder.svg?height=300&width=400"
   }
 
   return (
@@ -335,6 +355,8 @@ export default function DashboardPage() {
                         alt={design.title}
                         fill
                         className="object-cover"
+                        unoptimized
+                        onError={() => handleImageError(design.id)}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                       <div className="absolute bottom-0 left-0 p-4 text-white">
@@ -402,10 +424,12 @@ export default function DashboardPage() {
                     <Card className="overflow-hidden hover-lift card-elevated">
                       <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
                         <Image
-                          src={design.image || "/placeholder.svg"}
+                          src={imageError[design.id] ? getFallbackImage(design.name) : design.image}
                           alt={design.name}
                           fill
                           className="object-cover"
+                          unoptimized
+                          onError={() => handleImageError(design.id)}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         <div className="absolute bottom-2 left-2 text-white">
@@ -490,10 +514,12 @@ export default function DashboardPage() {
                     <Card className="overflow-hidden hover-lift card-elevated">
                       <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
                         <Image
-                          src={design.image || "/placeholder.svg"}
+                          src={imageError[design.id] ? getFallbackImage(design.name) : design.image}
                           alt={design.name}
                           fill
                           className="object-cover"
+                          unoptimized
+                          onError={() => handleImageError(design.id)}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         <div className="absolute bottom-2 left-2 text-white">
@@ -564,7 +590,14 @@ export default function DashboardPage() {
                 <AnimatedSection key={design.id} animation="slide-up" delay={50 * index}>
                   <Card className="overflow-hidden hover-lift card-elevated">
                     <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
-                      <Image src={design.image || "/placeholder.svg"} alt={design.name} fill className="object-cover" />
+                      <Image
+                        src={imageError[design.id] ? getFallbackImage(design.name) : design.image}
+                        alt={design.name}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        onError={() => handleImageError(design.id)}
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                       <div className="absolute bottom-2 left-2 text-white">
                         <design.icon className="h-6 w-6 drop-shadow-md" />
@@ -639,10 +672,12 @@ export default function DashboardPage() {
                       onClick={() => router.push("/new-design?template=" + template.id)}
                     >
                       <Image
-                        src={template.image || "/placeholder.svg"}
+                        src={imageError[template.id] ? getFallbackImage(template.name) : template.image}
                         alt={template.name}
                         fill
                         className="object-cover"
+                        unoptimized
+                        onError={() => handleImageError(template.id)}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                       <div className="absolute bottom-2 left-2 text-white">

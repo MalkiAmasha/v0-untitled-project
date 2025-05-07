@@ -27,9 +27,11 @@ export function DecorativeBackground({
     if (!ctx) return
 
     const resizeCanvas = () => {
+      if (!canvasRef.current) return
       const canvas = canvasRef.current
+
       const ctx = canvas.getContext("2d")
-      if (!canvas || !ctx) return
+      if (!ctx) return
 
       const parent = canvas.parentElement
       if (!parent) return
@@ -40,9 +42,11 @@ export function DecorativeBackground({
     }
 
     const drawPattern = () => {
+      if (!canvasRef.current) return
       const canvas = canvasRef.current
+
       const ctx = canvas.getContext("2d")
-      if (!canvas || !ctx) return
+      if (!ctx) return
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -99,16 +103,27 @@ export function DecorativeBackground({
       }
     }
 
-    // Initial setup
+    // Initial setup - make sure parent exists before setting up
     if (canvas.parentElement) {
       resizeCanvas()
-      window.addEventListener("resize", resizeCanvas)
+
+      // Add the event listener safely
+      const handleResize = () => {
+        if (canvasRef.current && canvasRef.current.parentElement) {
+          resizeCanvas()
+        }
+      }
+
+      window.addEventListener("resize", handleResize)
+
+      // Cleanup function
+      return () => {
+        window.removeEventListener("resize", handleResize)
+      }
     }
 
-    // Cleanup function
-    return () => {
-      window.removeEventListener("resize", resizeCanvas)
-    }
+    // If no parent element exists yet, don't set up listeners
+    return () => {}
   }, [variant, color, secondaryColor, density])
 
   return <canvas ref={canvasRef} className={`absolute inset-0 -z-10 opacity-50 pointer-events-none ${className}`} />
