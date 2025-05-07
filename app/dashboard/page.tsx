@@ -693,8 +693,7 @@ export default function DashboardPage() {
                     </CardContent>
                     <CardFooter className="p-4 pt-0">
                       <AnimatedButton
-                        variant="teal"
-                        className="w-full"
+                        className="w-full bg-rich-walnut hover:bg-warm-chestnut text-white"
                         onClick={() => handleUseTemplate(template.id)}
                         animation="lift"
                       >
