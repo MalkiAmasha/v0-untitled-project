@@ -133,16 +133,13 @@ export default function LoginPage() {
 
         <div className="relative z-10 flex flex-col justify-center items-center w-full p-12">
           <div className="mb-8 flex items-center">
-            <div className="relative h-16 w-16 mr-4">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ETMOTI3uXXH5Jz8ComMVrmsyOoy2tI.png"
-                alt="RoomCrafter Logo"
-                width={64}
-                height={64}
-                className="object-contain"
-              />
-            </div>
-            <h1 className="text-4xl font-bold text-[#5d4037]">RoomCrafter</h1>
+            <Image
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LZ8K9z0B0UjQaBCK5ntxcKBUAmuI7S.png"
+              alt="RoomCrafter Logo"
+              width={180}
+              height={40}
+              className="object-contain"
+            />
           </div>
 
           <div className="text-center mb-12">
@@ -190,16 +187,13 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-amber-50/30">
         <div className="w-full max-w-md">
           <div className="mb-8 flex items-center justify-center md:hidden">
-            <div className="relative h-12 w-12 mr-3">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ETMOTI3uXXH5Jz8ComMVrmsyOoy2tI.png"
-                alt="RoomCrafter Logo"
-                width={48}
-                height={48}
-                className="object-contain"
-              />
-            </div>
-            <h1 className="text-3xl font-bold text-[#5d4037]">RoomCrafter</h1>
+            <Image
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LZ8K9z0B0UjQaBCK5ntxcKBUAmuI7S.png"
+              alt="RoomCrafter Logo"
+              width={160}
+              height={36}
+              className="object-contain"
+            />
           </div>
 
           <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
