@@ -53,12 +53,12 @@ import { DecorativeBackground } from "@/components/decorative-background"
 import Image from "next/image"
 import { CartIcon } from "@/components/cart-icon"
 
-// Mock data for saved designs with color themes instead of images
+// Mock data for saved designs with images instead of color themes
 const savedDesigns = [
   {
     id: "1",
     name: "Modern Living Room",
-    color: "#7a8c98",
+    image: "/public/design-previews/modern-living-room.jpg",
     icon: Home,
     lastEdited: "2 hours ago",
     favorite: true,
@@ -66,7 +66,7 @@ const savedDesigns = [
   {
     id: "2",
     name: "Minimalist Bedroom",
-    color: "#a89b8c",
+    image: "/public/design-previews/minimalist-bedroom.jpg",
     icon: Bed,
     lastEdited: "Yesterday",
     favorite: false,
@@ -74,7 +74,7 @@ const savedDesigns = [
   {
     id: "3",
     name: "Cozy Office Space",
-    color: "#d2c8b4",
+    image: "/public/design-previews/cozy-office.jpg",
     icon: BookOpen,
     lastEdited: "3 days ago",
     favorite: true,
@@ -82,7 +82,7 @@ const savedDesigns = [
   {
     id: "4",
     name: "Kitchen Renovation",
-    color: "#8a7f72",
+    image: "/public/design-previews/kitchen-renovation.jpg",
     icon: Coffee,
     lastEdited: "1 week ago",
     favorite: false,
@@ -90,7 +90,7 @@ const savedDesigns = [
   {
     id: "5",
     name: "Bathroom Design",
-    color: "#6c7c74",
+    image: "/public/design-previews/bathroom-design.jpg",
     icon: Bath,
     lastEdited: "2 weeks ago",
     favorite: false,
@@ -98,40 +98,40 @@ const savedDesigns = [
   {
     id: "6",
     name: "Guest Room Layout",
-    color: "#9c8c7c",
+    image: "/public/design-previews/guest-room.jpg",
     icon: Armchair,
     lastEdited: "1 month ago",
     favorite: true,
   },
 ]
 
-// Mock data for templates with color themes instead of images
+// Mock data for templates with images instead of color themes
 const templates = [
   {
     id: "t1",
     name: "Modern Studio Apartment",
-    color: "#b5a898",
+    image: "/public/template-previews/modern-studio.jpg",
     icon: Home,
     category: "Apartment",
   },
   {
     id: "t2",
     name: "Open Concept Living",
-    color: "#8a7f72",
+    image: "/public/template-previews/open-concept.jpg",
     icon: Sofa,
     category: "Living Room",
   },
   {
     id: "t3",
     name: "Master Bedroom Suite",
-    color: "#6c7c74",
+    image: "/public/template-previews/master-bedroom.jpg",
     icon: Bed,
     category: "Bedroom",
   },
   {
     id: "t4",
     name: "Home Office Setup",
-    color: "#5b6057",
+    image: "/public/template-previews/home-office.jpg",
     icon: BookOpen,
     category: "Office",
   },
@@ -400,14 +400,17 @@ export default function DashboardPage() {
                 {filteredDesigns.map((design, index) => (
                   <AnimatedSection key={design.id} animation="slide-up" delay={50 * index}>
                     <Card className="overflow-hidden hover-lift card-elevated">
-                      <div
-                        className="relative aspect-video cursor-pointer flex items-center justify-center bg-gradient-to-br"
-                        style={{
-                          backgroundImage: `linear-gradient(135deg, ${design.color} 0%, ${adjustColor(design.color, -20)} 100%)`,
-                        }}
-                        onClick={() => handleOpenDesign(design.id)}
-                      >
-                        <design.icon className="h-12 w-12 text-white drop-shadow-md" />
+                      <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
+                        <Image
+                          src={design.image || "/placeholder.svg"}
+                          alt={design.name}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        <div className="absolute bottom-2 left-2 text-white">
+                          <design.icon className="h-6 w-6 drop-shadow-md" />
+                        </div>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -485,14 +488,17 @@ export default function DashboardPage() {
                 favorites.map((design, index) => (
                   <AnimatedSection key={design.id} animation="slide-up" delay={50 * index}>
                     <Card className="overflow-hidden hover-lift card-elevated">
-                      <div
-                        className="relative aspect-video cursor-pointer flex items-center justify-center bg-gradient-to-br"
-                        style={{
-                          backgroundImage: `linear-gradient(135deg, ${design.color} 0%, ${adjustColor(design.color, -20)} 100%)`,
-                        }}
-                        onClick={() => handleOpenDesign(design.id)}
-                      >
-                        <design.icon className="h-12 w-12 text-white drop-shadow-md" />
+                      <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
+                        <Image
+                          src={design.image || "/placeholder.svg"}
+                          alt={design.name}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        <div className="absolute bottom-2 left-2 text-white">
+                          <design.icon className="h-6 w-6 drop-shadow-md" />
+                        </div>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -557,14 +563,12 @@ export default function DashboardPage() {
               {designs.slice(0, 4).map((design, index) => (
                 <AnimatedSection key={design.id} animation="slide-up" delay={50 * index}>
                   <Card className="overflow-hidden hover-lift card-elevated">
-                    <div
-                      className="relative aspect-video cursor-pointer flex items-center justify-center bg-gradient-to-br"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${design.color} 0%, ${adjustColor(design.color, -20)} 100%)`,
-                      }}
-                      onClick={() => handleOpenDesign(design.id)}
-                    >
-                      <design.icon className="h-12 w-12 text-white drop-shadow-md" />
+                    <div className="relative aspect-video cursor-pointer" onClick={() => handleOpenDesign(design.id)}>
+                      <Image src={design.image || "/placeholder.svg"} alt={design.name} fill className="object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                      <div className="absolute bottom-2 left-2 text-white">
+                        <design.icon className="h-6 w-6 drop-shadow-md" />
+                      </div>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -631,13 +635,19 @@ export default function DashboardPage() {
                 <AnimatedSection key={template.id} animation="slide-up" delay={50 * index}>
                   <Card className="overflow-hidden hover-lift card-elevated">
                     <div
-                      className="relative aspect-video cursor-pointer flex items-center justify-center bg-gradient-to-br"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${template.color} 0%, ${adjustColor(template.color, -20)} 100%)`,
-                      }}
+                      className="relative aspect-video cursor-pointer"
                       onClick={() => router.push("/new-design?template=" + template.id)}
                     >
-                      <template.icon className="h-12 w-12 text-white drop-shadow-md" />
+                      <Image
+                        src={template.image || "/placeholder.svg"}
+                        alt={template.name}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                      <div className="absolute bottom-2 left-2 text-white">
+                        <template.icon className="h-6 w-6 drop-shadow-md" />
+                      </div>
                       <div className="absolute top-2 left-2 bg-highlight-gold/90 text-charcoal-brown px-2 py-1 rounded-md text-xs font-medium">
                         {template.category}
                       </div>
@@ -689,23 +699,4 @@ export default function DashboardPage() {
       </Dialog>
     </div>
   )
-}
-
-// Helper function to adjust color brightness
-function adjustColor(hex: string, percent: number) {
-  // Remove the # if it exists
-  hex = hex.replace("#", "")
-
-  // Convert to RGB
-  let r = Number.parseInt(hex.substring(0, 2), 16)
-  let g = Number.parseInt(hex.substring(2, 4), 16)
-  let b = Number.parseInt(hex.substring(4, 6), 16)
-
-  // Adjust brightness
-  r = Math.max(0, Math.min(255, r + percent))
-  g = Math.max(0, Math.min(255, g + percent))
-  b = Math.max(0, Math.min(255, b + percent))
-
-  // Convert back to hex
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`
 }
